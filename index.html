@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Samir AI Studio</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <div class="top-tabs">
+    <button class="tt active" data-mode="video">Vidéo</button>
+    <button class="tt" data-mode="image">Image</button>
+    <button class="tt" data-mode="audio">Audio</button>
+  </div>
+  <div class="sub-tabs">
+    <span>image et texte</span><span>⭐ Référence</span><span>✦ Modèle</span><span>Première et dernière image</span><span>Étendre</span><span>Modifier</span><span>Contrôle du Mouvement</span>
+  </div>
+
+  <div class="panel">
+    <input type="password" id="token" placeholder="Hugging Face API token (hf_...)" style="width:100%;margin-bottom:10px">
+    <div class="prompt-zone">
+      <textarea id="vidprompt" placeholder="Décrivez votre scène…"></textarea>
+      <input type="file" id="filevid" hidden accept="image/*,video/*">
+      <label for="filevid" class="thumb" id="thumb">+</label>
+    </div>
+    <div id="vidupload" style="color:var(--muted);font-size:13px;margin:4px 0"></div>
+
+    <div class="bottom-bar">
+      <span class="chip" id="dur">540P · 5s</span>
+      <label class="switch"><input type="checkbox" id="audiotog"> Audio</label>
+      <label class="switch"><input type="checkbox"> Multi-Prise</label>
+      <span class="chip">Panneau de Configuration 💎</span>
+      <span class="spacer"></span>
+      <select id="vidmodel">
+        <option value="Wan-AI/Wan2.1-T2V-1.3B">PixVerse V6</option>
+        <option value="THUDM/CogVideoX-2b">CogVideoX-2B</option>
+      </select>
+      <button id="genvid" class="create">Créer ⚡</button>
+    </div>
+  </div>
+
+  <!-- Image mode UI (hidden while video/audio active) -->
+  <div class="panel" id="imagePane" style="display:none">
+    <div class="prompt-zone">
+      <textarea id="prompt" placeholder="Décrivez l'image à créer…"></textarea>
+      <input type="file" id="fileimg" hidden accept="image/*">
+      <label for="fileimg" class="thumb" id="ithumb">+</label>
+    </div>
+    <div id="imgupload" style="color:var(--muted);font-size:13px;margin:4px 0"></div>
+    <div class="bottom-bar">
+      <select id="model">
+        <option value="stabilityai/stable-diffusion-xl-base-1.0">Stable Diffusion XL</option>
+        <option value="runwayml/stable-diffusion-v1-5">SD 1.5</option>
+      </select>
+      <button id="genimg" class="create">Créer ⚡</button>
+    </div>
+  </div>
+
+  <div class="panel" id="audioPane" style="display:none">
+    <p style="padding:40px;color:var(--muted)">Audio mode coming soon.</p>
+  </div>
+
+  <div style="margin:20px auto;max-width:720px" id="outputs">
+    <div id="imgout" class="output"></div>
+    <div id="vidout" class="output" style="min-height:160px"></div>
+  </div>
+</div>
+<script src="app.js"></script>
+<script>
+  document.querySelectorAll('.tt').forEach((btn)=>btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tt').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const mode = btn.dataset.mode;
+    document.getElementById('imagePane').style.display = mode==='image' ? 'block':'none';
+    document.getElementById('audioPane').style.display = mode==='audio' ? 'block':'none';
+    document.querySelector('.prompt-zone').style.display = mode==='image' ? 'none':'block';
+    document.getElementById('imagePane').style.display = mode==='image' ? 'block':'none';
+  }));
+</script>
+</body>
+</html>
